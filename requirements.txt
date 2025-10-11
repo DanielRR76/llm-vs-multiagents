@@ -1,0 +1,13 @@
+streamlit
+langchain-core
+langchain-community
+python-dotenv
+pandas
+openai
+typing-extensions
+langgraph
+pytest
+ruff
+isort
+black
+pytest-cov
