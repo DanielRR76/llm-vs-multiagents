@@ -1,7 +1,7 @@
 from src.domain.state import State
 
 
-class UnitTestAgent:
+class TestGenerator:
     def __init__(self, agent):
         self.agent = agent
 
