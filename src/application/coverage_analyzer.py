@@ -1,7 +1,7 @@
 from src.domain.state import State
 
 
-class CoverageAgent:
+class CoverageAnalyzer:
     def __init__(self, agent):
         self.agent = agent
 
@@ -18,3 +18,6 @@ class CoverageAgent:
             else ""
         )
         return {"coverage_agent_response": content}
+
+    def runCoverageAnalysis(self, state: State):
+        return self.respond(state)  # to do
