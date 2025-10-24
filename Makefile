@@ -12,3 +12,12 @@ llm-install:
 
 llm-run:
 	PYTHONPATH=. streamlit run src/main.py
+
+python-test:
+	pytest src/environment/python/input_code_test.py
+
+python-coverage:
+	pytest --cov=src/environment/python src/environment/python/input_code_test.py --cov-report=json:src/environment/python/coverage.json
+
+# 	pytest --cov=src/environment/python/input_code.py --cov-report=json:coverage.json
+
