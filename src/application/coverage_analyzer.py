@@ -1,4 +1,6 @@
+import subprocess
 from src.domain.state import State
+from src.utils.file_manager import FileManager
 
 
 class CoverageAnalyzer:
@@ -6,7 +8,8 @@ class CoverageAnalyzer:
         self.agent = agent
 
     def respond(self, state: State):
-        prompt = f'Código: "{state.code}".\n'
+        coverage = self.runCoverageAnalysis("src/environment/python/coverage.json")
+        prompt = f'Código de teste: "{state.test_generator_response}".\n Coverage: "{coverage}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
@@ -19,5 +22,10 @@ class CoverageAnalyzer:
         )
         return {"coverage_agent_response": content}
 
-    def runCoverageAnalysis(self, state: State):
-        return self.respond(state)  # to do
+    def runCoverageAnalysis(self, path: str) -> str:
+        command = ["make", "python-coverage"]
+        subprocess.run(command)
+
+        coverage_content = FileManager.readFile(path)
+        coverage_json_string = FileManager.jsonStringify(coverage_content)
+        return coverage_json_string
