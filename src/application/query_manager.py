@@ -1,6 +1,7 @@
 # query_manager.py
 from src.application.agent_manager import AgentManager
 from src.domain.state import State
+from src.utils.file_manager import FileManager
 
 
 class QueryManager:
@@ -10,6 +11,7 @@ class QueryManager:
 
     def multi_agent_response(self, code: str) -> dict[str, object]:
         state = State(code=code)
+        FileManager.writeFile("src/environment/python/input_code.py", code)
         try:
             result = self.agent_manager.chain.invoke(state)
             return {
