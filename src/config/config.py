@@ -31,3 +31,7 @@ class Config:
             os.getenv("TEST_STRATEGIST_AGENT_ENDPOINT"),
             os.getenv("TEST_STRATEGIST_AGENT_API_KEY"),
         )
+        self.reviewer_agent = (
+            os.getenv("REVIEWER_AGENT_ENDPOINT"),
+            os.getenv("REVIEWER_AGENT_API_KEY"),
+        )
