@@ -7,10 +7,12 @@ from src.application.mutation_test_agent import MutationTestAgent
 from src.application.quality_agent import QualityAgent
 from src.application.test_generator import TestGenerator
 from src.application.query_manager import QueryManager
+from src.application.test_reviewer import TestReviewer
 from src.infrastructure.ai_agents import Agents
 from src.interfaces.ui.stremlit_app import Index
 from src.application.code_analyzer import CodeAnalyzer
 from src.application.test_strategist import TestStrategist
+from src.application.test_executor import TestExecutor
 
 
 class Main:
@@ -35,7 +37,11 @@ class Main:
             test_strategist_agent = TestStrategist(
                 Agents.load_agent(*self.config.test_strategist_agent)
             )
+            reviewer_agent = TestReviewer(
+                Agents.load_agent(*self.config.reviewer_agent)
+            )
             quality_agent = QualityAgent(Agents.load_agent(*self.config.quality_agent))
+            test_executor = TestExecutor()
 
             logging.info("Todos os agentes carregados com sucesso")
         except Exception as e:
@@ -48,6 +54,8 @@ class Main:
             quality_agent=quality_agent,
             code_analyzer_agent=code_analyzer_agent,
             test_strategist_agent=test_strategist_agent,
+            test_executor=test_executor,
+            reviewer_agent=reviewer_agent,
         )
 
         query_manager = QueryManager(agent_manager=agent_manager)
