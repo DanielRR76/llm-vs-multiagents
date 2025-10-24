@@ -1,0 +1,5 @@
+pytest
+ruff
+isort
+black
+pytest-cov
