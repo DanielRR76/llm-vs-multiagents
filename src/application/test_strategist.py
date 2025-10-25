@@ -6,7 +6,7 @@ class TestStrategist:
         self.agent = agent
 
     def respond(self, state: State):
-        prompt = f'Código: "{state.code}".\n'
+        prompt = f'Json do analista de código: "{state.code}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
