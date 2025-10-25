@@ -1,17 +1,17 @@
 import logging
 
 from config.config import Config
-from src.application.agent_manager import AgentManager
-from src.application.coverage_analyzer import CoverageAnalyzer
+from src.application.orchestrator import Orchestrator
+from src.application.coverage_analyzer_agent import CoverageAnalyzer
 from src.application.mutation_test_agent import MutationTestAgent
 from src.application.quality_agent import QualityAgent
-from src.application.test_generator import TestGenerator
+from src.application.test_generator_agent import TestGenerator
 from src.application.query_manager import QueryManager
-from src.application.test_reviewer import TestReviewer
+from src.application.test_reviewer_agent import TestReviewer
 from src.infrastructure.ai_agents import Agents
 from src.interfaces.ui.stremlit_app import Index
 from src.application.code_analyzer_agent import CodeAnalyzer
-from src.application.test_strategist import TestStrategist
+from src.application.test_strategist_agent import TestStrategist
 from src.application.test_executor import TestExecutor
 
 
@@ -47,7 +47,7 @@ class Main:
         except Exception as e:
             logging.error(f"Erro ao carregar agentes: {e}", exc_info=True)
             return
-        agent_manager = AgentManager(
+        agent_manager = Orchestrator(
             coverage_agent=coverage_agent,
             mutation_test_agent=mutation_test_agent,
             unit_test_agent=unit_test_agent,

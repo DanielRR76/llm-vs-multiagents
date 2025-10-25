@@ -1,12 +1,12 @@
 # query_manager.py
-from src.application.agent_manager import AgentManager
+from src.application.orchestrator import Orchestrator
 from src.domain.state import State
 from src.utils.file_manager import FileManager
 
 
 class QueryManager:
 
-    def __init__(self, agent_manager: AgentManager):
+    def __init__(self, agent_manager: Orchestrator):
         self.agent_manager = agent_manager
 
     def multi_agent_response(self, code: str) -> dict[str, object]:

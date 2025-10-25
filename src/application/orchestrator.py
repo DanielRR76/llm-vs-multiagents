@@ -1,18 +1,18 @@
-# agent_manager.py
+# orchestrator.py
 from langgraph.graph import END, START, StateGraph
 
-from src.application.test_reviewer import TestReviewer
+from src.application.test_reviewer_agent import TestReviewer
 from src.domain.state import State
-from src.application.coverage_analyzer import CoverageAnalyzer
+from src.application.coverage_analyzer_agent import CoverageAnalyzer
 from src.application.mutation_test_agent import MutationTestAgent
-from src.application.test_generator import TestGenerator
+from src.application.test_generator_agent import TestGenerator
 from src.application.quality_agent import QualityAgent
 from src.application.code_analyzer_agent import CodeAnalyzer
-from src.application.test_strategist import TestStrategist
+from src.application.test_strategist_agent import TestStrategist
 from src.application.test_executor import TestExecutor
 
 
-class AgentManager:
+class Orchestrator:
 
     def __init__(
         self,
