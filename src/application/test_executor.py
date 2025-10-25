@@ -18,3 +18,9 @@ class TestExecutor:
             "returncode": result.returncode,
         }
         return {"test_executor_response": response}
+
+    def verifyLogs(self, state: State) -> bool:
+        logs = state.test_executor_response
+        if logs["returncode"] != 0:
+            return False
+        return True

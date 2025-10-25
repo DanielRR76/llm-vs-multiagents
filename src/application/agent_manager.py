@@ -51,6 +51,14 @@ class AgentManager:
         self.workflow.add_edge("strategist", "generator")
         # self.workflow.add_edge("strategist", "mutation_tester")
         self.workflow.add_edge("generator", "executor")
-        self.workflow.add_edge("executor", "reviewer")
-        # to do: add coverage and mutation tester nodes back in the workflow
-        self.workflow.add_edge("reviewer", END)
+        self.workflow.add_conditional_edges(
+            "executor",
+            self.test_executor.verifyLogs,
+            {True: "coverage", False: "generator"},
+        )
+        self.workflow.add_edge("coverage", "reviewer")
+        self.workflow.add_conditional_edges(
+            "reviewer",
+            self.reviewer_agent.hasFinalCode,
+            {True: END, False: "generator"},
+        )
