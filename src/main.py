@@ -10,7 +10,7 @@ from src.application.query_manager import QueryManager
 from src.application.test_reviewer import TestReviewer
 from src.infrastructure.ai_agents import Agents
 from src.interfaces.ui.stremlit_app import Index
-from src.application.code_analyzer import CodeAnalyzer
+from src.application.code_analyzer_agent import CodeAnalyzer
 from src.application.test_strategist import TestStrategist
 from src.application.test_executor import TestExecutor
 

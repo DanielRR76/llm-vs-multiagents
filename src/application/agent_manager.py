@@ -7,7 +7,7 @@ from src.application.coverage_analyzer import CoverageAnalyzer
 from src.application.mutation_test_agent import MutationTestAgent
 from src.application.test_generator import TestGenerator
 from src.application.quality_agent import QualityAgent
-from src.application.code_analyzer import CodeAnalyzer
+from src.application.code_analyzer_agent import CodeAnalyzer
 from src.application.test_strategist import TestStrategist
 from src.application.test_executor import TestExecutor
 
