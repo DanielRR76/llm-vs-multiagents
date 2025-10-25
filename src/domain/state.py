@@ -6,9 +6,10 @@ from typing import Dict
 class State:
     code: str = ""
     coverage_agent_response: str = ""
+    test_strategist_response: str = ""
     mutation_agent_response: str = ""
-    performance_agent_response: str = ""
     test_generator_response: str = ""
     test_executor_response: Dict[str, object] = field(default_factory=dict)
+    test_reviewer_response: Dict[str, object] = field(default_factory=dict)
     quality_agent_response: str = ""
     final_code: str = ""
