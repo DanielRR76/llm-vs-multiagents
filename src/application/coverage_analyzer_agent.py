@@ -9,7 +9,7 @@ class CoverageAnalyzer:
 
     def respond(self, state: State):
         coverage = self.runCoverageAnalysis("src/environment/python/coverage.json")
-        prompt = f'Código de teste: "{state.test_generator_response}".\n Coverage: "{coverage}".\n'
+        prompt = f'User code: "{state.code}".\n Coverage: "{coverage}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
