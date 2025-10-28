@@ -1,3 +1,4 @@
+import json
 from src.domain.state import State
 
 
@@ -6,7 +7,7 @@ class TestReviewer:
         self.agent = agent
 
     def respond(self, state: State):
-        prompt = f'Código: "{state.code}".\n Código de teste gerado: "{state.test_generator_response}".\n Estratégias de teste: "{state.test_strategist_response}".\n Cobertura de teste: "{state.coverage_agent_response}".\n Resultados da execução dos testes: "{state.test_executor_response}".\n'
+        prompt = f'User code: "{state.code}".\n Test code: "{state.test_generator_response}".\n Test strategist analysis: "{state.test_strategist_response}".\n Coverage: "{state.coverage_agent_response}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
@@ -17,7 +18,8 @@ class TestReviewer:
             if response.choices and hasattr(response.choices[0].message, "content")
             else ""
         )
-        return {"test_reviewer_response": content}
+        content_json = json.loads(content)
+        return {"test_reviewer_response": content_json}
 
     def hasFinalCode(self, state: State) -> bool:
         review = state.test_reviewer_response
