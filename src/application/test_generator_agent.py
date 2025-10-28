@@ -6,7 +6,7 @@ class TestGenerator:
         self.agent = agent
 
     def respond(self, state: State):
-        prompt = f'Código: "{state.code}".\n Estratégias de teste: "{state.test_strategist_response}".\n'
+        prompt = f'User code: "{state.code}".\n Test strategist analysis: "{state.test_strategist_response}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
