@@ -5,6 +5,7 @@ from typing import Dict
 @dataclass
 class State:
     code: str = ""
+    code_analyzer_response: str = ""
     coverage_agent_response: str = ""
     test_strategist_response: str = ""
     mutation_agent_response: str = ""
