@@ -17,7 +17,10 @@ python-test:
 	pytest src/environment/python/input_code_test.py
 
 python-coverage:
-	pytest --cov=src/environment/python src/environment/python/input_code_test.py --cov-report=json:src/environment/python/coverage.json
+	pytest --cov=src/environment/python src/environment/python/input_code_test.py --cov-report=json:src/environment/python/coverage.json --cov-branch
 
-# 	pytest --cov=src/environment/python/input_code.py --cov-report=json:coverage.json
+python-coverage-cmd:
+	pytest --cov=src/environment/python src/environment/python/input_code_test.py --cov-branch
 
+python-mutation:
+	pytest src/environment/python/input_code_test.py
