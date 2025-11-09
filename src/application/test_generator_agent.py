@@ -6,7 +6,9 @@ class TestGenerator:
         self.agent = agent
 
     def respond(self, state: State):
-        prompt = f'User code: "{state.code}".\n Test strategist analysis: "{state.test_strategist_response}".\n'
+        prompt = f'User code: "{state.code_refactor_response or state.code}".\n Test strategist analysis: "{state.test_strategist_response}".\n'
+        if state.test_executor_response.get("stderr"):
+            prompt += f'Previous test execution errors: "{state.test_executor_response.get("stderr")}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
@@ -17,4 +19,5 @@ class TestGenerator:
             if response.choices and hasattr(response.choices[0].message, "content")
             else ""
         )
-        return {"unit_test_agent_response": content}
+        clean_code = content.replace("```python", "").replace("```", "").strip()
+        return {"test_generator_response": clean_code}
