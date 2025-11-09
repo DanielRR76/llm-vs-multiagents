@@ -35,3 +35,7 @@ class Config:
             os.getenv("REVIEWER_AGENT_ENDPOINT"),
             os.getenv("REVIEWER_AGENT_API_KEY"),
         )
+        self.code_refactor_agent = (
+            os.getenv("CODE_REFACTOR_AGENT_ENDPOINT"),
+            os.getenv("CODE_REFACTOR_AGENT_API_KEY"),
+        )
