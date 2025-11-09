@@ -10,6 +10,7 @@ from src.application.quality_agent import QualityAgent
 from src.application.code_analyzer_agent import CodeAnalyzer
 from src.application.test_strategist_agent import TestStrategist
 from src.application.test_executor import TestExecutor
+from src.application.code_refactor_agent import CodeRefactor
 
 
 class Orchestrator:
@@ -24,6 +25,7 @@ class Orchestrator:
         test_strategist_agent: TestStrategist,
         test_executor: TestExecutor,
         reviewer_agent: TestReviewer,
+        code_refactor_agent: CodeRefactor,
     ):
         self.coverage_agent = coverage_agent
         self.mutation_test_agent = mutation_test_agent
@@ -33,32 +35,35 @@ class Orchestrator:
         self.quality_agent = quality_agent
         self.test_executor = test_executor
         self.reviewer_agent = reviewer_agent
+        self.code_refactor_agent = code_refactor_agent
         self.workflow = StateGraph(State)
         self._build_workflow()
         self.chain = self.workflow.compile()
 
     def _build_workflow(self):
         self.workflow.add_node("coverage", self.coverage_agent.respond)
-        # self.workflow.add_node("mutation_tester", self.mutation_test_agent.respond)
+        self.workflow.add_node("mutation_tester", self.mutation_test_agent.respond)
         self.workflow.add_node("generator", self.unit_test_agent.respond)
         self.workflow.add_node("analyzer", self.code_analyzer_agent.respond)
         self.workflow.add_node("strategist", self.test_strategist_agent.respond)
         self.workflow.add_node("executor", self.test_executor.execute)
+        self.workflow.add_node(
+            "executor_mutation", self.test_executor.execute_mutation_test
+        )
         self.workflow.add_node("reviewer", self.reviewer_agent.respond)
+        self.workflow.add_node("refactor", self.code_refactor_agent.respond)
 
         self.workflow.add_edge(START, "analyzer")
         self.workflow.add_edge("analyzer", "strategist")
-        self.workflow.add_edge("strategist", "generator")
-        # self.workflow.add_edge("strategist", "mutation_tester")
+        self.workflow.add_edge("strategist", "refactor")
+        self.workflow.add_edge("refactor", "generator")
         self.workflow.add_edge("generator", "executor")
         self.workflow.add_conditional_edges(
             "executor",
             self.test_executor.verifyLogs,
             {True: "coverage", False: "generator"},
         )
-        self.workflow.add_edge("coverage", "reviewer")
-        self.workflow.add_conditional_edges(
-            "reviewer",
-            self.reviewer_agent.hasFinalCode,
-            {True: END, False: "generator"},
-        )
+        self.workflow.add_edge("coverage", "mutation_tester")
+        self.workflow.add_edge("mutation_tester", "executor_mutation")
+        self.workflow.add_edge("executor_mutation", "reviewer")
+        self.workflow.add_edge("reviewer", END)
