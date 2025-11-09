@@ -7,7 +7,7 @@ class TestReviewer:
         self.agent = agent
 
     def respond(self, state: State):
-        prompt = f'User code: "{state.code}".\n Test code: "{state.test_generator_response}".\n Test strategist analysis: "{state.test_strategist_response}".\n Coverage: "{state.coverage_agent_response}".\n'
+        prompt = f'Mutation logs: "{state.test_executor_mutation_response}".\n Coverage: "{state.coverage_agent_response}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
@@ -25,6 +25,5 @@ class TestReviewer:
         review = state.test_reviewer_response
         final_code = review.get("final_code")
         if final_code:
-            state.final_code = str(final_code)
             return True
         return False
