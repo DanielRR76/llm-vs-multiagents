@@ -13,6 +13,7 @@ from src.interfaces.ui.stremlit_app import Index
 from src.application.code_analyzer_agent import CodeAnalyzer
 from src.application.test_strategist_agent import TestStrategist
 from src.application.test_executor import TestExecutor
+from src.application.code_refactor_agent import CodeRefactor
 
 
 class Main:
@@ -42,6 +43,9 @@ class Main:
             )
             quality_agent = QualityAgent(Agents.load_agent(*self.config.quality_agent))
             test_executor = TestExecutor()
+            code_refactor_agent = CodeRefactor(
+                Agents.load_agent(*self.config.code_refactor_agent)
+            )
 
             logging.info("Todos os agentes carregados com sucesso")
         except Exception as e:
@@ -56,6 +60,7 @@ class Main:
             test_strategist_agent=test_strategist_agent,
             test_executor=test_executor,
             reviewer_agent=reviewer_agent,
+            code_refactor_agent=code_refactor_agent,
         )
 
         query_manager = QueryManager(agent_manager=agent_manager)
