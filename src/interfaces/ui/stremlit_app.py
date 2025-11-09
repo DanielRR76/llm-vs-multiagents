@@ -188,7 +188,7 @@ class Index:
                     border-radius: var(--border-radius);
                     border: 1px solid rgba(255, 255, 255, 0.15);
                     transition: all 0.3s ease;
-                    height: 45vh;
+                    height: 55vh;
                     margin-bottom: 1rem;
                 }
 
@@ -372,8 +372,8 @@ class Index:
                     ):
                         try:
                             result = self.query_manager.unique_llm_response(query_llm)
-                            code_response = result.get("text_response") or result.get(
-                                "result"
+                            code_response = (
+                                result.code or "Não foi possível gerar código."
                             )
 
                             st.markdown("### 📊 Resultado - LLM Único")
@@ -442,15 +442,25 @@ class Index:
                             result = self.query_manager.multi_agent_response(
                                 query_multiagent
                             )
-                            code_response = result.get("text_response") or result.get(
-                                "result"
-                            )
+                            code_response = result.code or result.error
 
                             st.markdown("### 📊 Resultado - Sistema Multiagente")
 
-                            with st.expander("Code - Multiagente", expanded=True):
+                            with st.expander("Test Code - Multiagente", expanded=True):
                                 if isinstance(code_response, str):
                                     st.code(code_response, language="python")
+
+                            if result.state.code_refactor_response:
+                                with st.expander(
+                                    "Refactor Code - Multiagente", expanded=True
+                                ):
+                                    if isinstance(
+                                        result.state.code_refactor_response, str
+                                    ):
+                                        st.code(
+                                            result.state.code_refactor_response,
+                                            language="python",
+                                        )
 
                             st.download_button(
                                 label="📥 Baixar Testes Gerados",
