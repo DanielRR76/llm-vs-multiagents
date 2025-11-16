@@ -10,21 +10,4 @@ RUN apt-get update && apt-get install -y \
 # Define diretório de trabalho
 WORKDIR /app
 
-# Copia requirements e Makefile
-COPY ../requirements.txt .
-COPY ../Makefile .
-
-# Instala PyTorch CPU-only explicitamente
-RUN pip install --no-cache-dir torch==2.2.2
-
-# Instala os demais pacotes
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copia todo o código-fonte
-COPY ../src ./src
-
-# Define PYTHONPATH para que imports de src funcionem
 ENV PYTHONPATH=/app
-
-# Comando padrão
-CMD ["python", "-m", "src.main"]
