@@ -9,8 +9,6 @@ class CodeRefactor:
     def respond(self, state: State):
         print("CodeRefactor: Refactoring code...")
         prompt = f'User code: "{state.code}".\n Test strategist analysis: "{state.test_strategist_response}".\n'
-        if state.test_executor_response.get("stderr"):
-            prompt += f'Previous test execution errors: "{state.test_executor_response.get("stderr")}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
             messages=[{"role": "user", "content": prompt}],
@@ -22,10 +20,12 @@ class CodeRefactor:
             else ""
         )
         clean_code = content.replace("```python", "").replace("```", "").strip()
-        print("CodeRefactor: Generated response:", clean_code)
+        print(f"Refactored code:\n{clean_code}")
         hasCodeRefactor = self.hasCodeRefactorResponse(clean_code)
         if hasCodeRefactor:
-            FileManager.writeFile("src/environment/python/input_code.py", clean_code)
+            FileManager.writeFile(
+                "src/environment/python/app/input_code.py", clean_code
+            )
         return {"code_refactor_response": clean_code}
 
     def hasCodeRefactorResponse(self, response: str):
