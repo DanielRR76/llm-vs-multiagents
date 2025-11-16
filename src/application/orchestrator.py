@@ -41,16 +41,13 @@ class Orchestrator:
         self.chain = self.workflow.compile()
 
     def _build_workflow(self):
-        self.workflow.add_node("coverage", self.coverage_agent.respond)
-        self.workflow.add_node("mutation_tester", self.mutation_test_agent.respond)
+        # self.workflow.add_node("coverage", self.coverage_agent.respond)
+        # self.workflow.add_node("mutation_tester", self.mutation_test_agent.respond)
         self.workflow.add_node("generator", self.unit_test_agent.respond)
         self.workflow.add_node("analyzer", self.code_analyzer_agent.respond)
         self.workflow.add_node("strategist", self.test_strategist_agent.respond)
         self.workflow.add_node("executor", self.test_executor.execute)
-        self.workflow.add_node(
-            "executor_mutation", self.test_executor.execute_mutation_test
-        )
-        self.workflow.add_node("reviewer", self.reviewer_agent.respond)
+        # self.workflow.add_node("reviewer", self.reviewer_agent.respond)
         self.workflow.add_node("refactor", self.code_refactor_agent.respond)
 
         self.workflow.add_edge(START, "analyzer")
@@ -60,10 +57,10 @@ class Orchestrator:
         self.workflow.add_edge("generator", "executor")
         self.workflow.add_conditional_edges(
             "executor",
-            self.test_executor.verifyLogs,
-            {True: "coverage", False: "generator"},
+            self.test_executor.tests_passed,
+            {True: END, False: "generator"},
         )
-        self.workflow.add_edge("coverage", "mutation_tester")
-        self.workflow.add_edge("mutation_tester", "executor_mutation")
-        self.workflow.add_edge("executor_mutation", "reviewer")
-        self.workflow.add_edge("reviewer", END)
+        # self.workflow.add_edge("coverage", "mutation_tester")
+        # self.workflow.add_edge("mutation_tester", "executor_mutation")
+        # self.workflow.add_edge("executor_mutation", "reviewer")
+        # self.workflow.add_edge("reviewer", END)
