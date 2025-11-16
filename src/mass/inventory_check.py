@@ -1,4 +1,3 @@
-# ecommerce_services.py
 from typing import Mapping, Dict, Any
 
 
@@ -11,7 +10,9 @@ class InventoryCheckService:
     def __init__(self):
         pass
 
-    def check_availability(self, snapshot: Mapping[str, int], requested: Mapping[str, int]) -> Dict[str, Any]:
+    def check_availability(
+        self, snapshot: Mapping[str, int], requested: Mapping[str, int]
+    ) -> Dict[str, Any]:
         """
         Retorna:
           - available: bool (true se todos itens disponíveis)
@@ -30,4 +31,3 @@ class InventoryCheckService:
             if not ok:
                 all_ok = False
         return {"available": all_ok, "details": details}
-

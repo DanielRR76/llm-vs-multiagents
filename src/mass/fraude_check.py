@@ -1,4 +1,3 @@
-# ecommerce_services.py
 from decimal import Decimal
 from typing import Mapping, Optional
 
@@ -17,7 +16,9 @@ class FraudScorerService:
         defaults = {"value_weight": 0.5, "email_age_weight": 0.3, "ip_weight": 0.2}
         self.weights = dict(weights or defaults)
 
-    def score(self, order_value: Decimal, email_age_days: int, ip_risk_score: float) -> float:
+    def score(
+        self, order_value: Decimal, email_age_days: int, ip_risk_score: float
+    ) -> float:
         if not isinstance(order_value, Decimal):
             raise TypeError("order_value must be Decimal")
         if email_age_days < 0:
