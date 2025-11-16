@@ -1,5 +1,4 @@
-# ecommerce_services.py
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Mapping, Any, Optional
 
@@ -19,7 +18,12 @@ class DiscountValidatorService:
     def __init__(self):
         pass
 
-    def validate(self, coupon: Mapping[str, Any], subtotal: Decimal, now: Optional[datetime] = None) -> bool:
+    def validate(
+        self,
+        coupon: Mapping[str, Any],
+        subtotal: Decimal,
+        now: Optional[datetime] = None,
+    ) -> bool:
         if not isinstance(subtotal, Decimal):
             raise TypeError("subtotal must be Decimal")
         required = {"code", "type", "value"}
@@ -36,7 +40,7 @@ class DiscountValidatorService:
             if subtotal < min_sub:
                 return False
         if "expires_at" in coupon:
-            now = now or datetime.utcnow()
+            now = now or datetime.now(timezone.utc)
             expires = datetime.fromisoformat(str(coupon["expires_at"]))
             if now > expires:
                 return False
@@ -53,8 +57,9 @@ class DiscountValidatorService:
         ctype = coupon["type"]
         value = Decimal(str(coupon["value"]))
         if ctype == "percentage":
-            discount = (subtotal * value).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            discount = (subtotal * value).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
             return discount
         else:
             return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-
