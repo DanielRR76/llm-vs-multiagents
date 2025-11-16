@@ -8,19 +8,19 @@ exec-llm:
 	docker compose -f docker/docker-compose.yml exec llm bash
 
 llm-install:
-	pip install -r requirements.txt
+	pip install -r requirements.txt && cd src/environment/python && pip install -r requirements.txt
 
 llm-run:
 	PYTHONPATH=. streamlit run src/main.py
 
 python-test:
-	pytest src/environment/python/input_code_test.py
+	pytest src/environment/python/tests/test_input_code.py
 
-python-coverage:
-	pytest --cov=src/environment/python src/environment/python/input_code_test.py --cov-report=json:src/environment/python/coverage.json --cov-branch
+python-coverage-json:
+	pytest --cov=src/environment/python src/environment/python/tests/test_input_code.py --cov-report=json:src/environment/python/coverage.json --cov-branch
 
-python-coverage-cmd:
-	pytest --cov=src/environment/python src/environment/python/input_code_test.py --cov-branch
+python-cov:
+	pytest --cov=src/environment/python/app src/environment/python/tests/test_input_code.py --cov-branch
 
-python-mutation:
-	pytest src/environment/python/input_code_test.py
+python-mut:
+	cd src/environment/python && mutmut run
