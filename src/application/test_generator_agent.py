@@ -6,6 +6,7 @@ class TestGenerator:
         self.agent = agent
 
     def respond(self, state: State):
+        print("TestGenerator: Generating tests...")
         prompt = f'User code: "{state.code_refactor_response or state.code}".\n Test strategist analysis: "{state.test_strategist_response}".\n'
         if state.test_executor_response.get("stderr"):
             prompt += f'Previous test execution errors: "{state.test_executor_response.get("stderr")}".\n'

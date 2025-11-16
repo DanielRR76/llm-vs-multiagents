@@ -6,6 +6,7 @@ class CodeAnalyzer:
         self.agent = agent
 
     def respond(self, state: State):
+        print("CodeAnalyzer: Analyzing code...")
         prompt = f'User code: "{state.code}".\n'
         response = self.agent.chat.completions.create(
             model="n/a",
