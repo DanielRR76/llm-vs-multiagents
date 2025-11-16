@@ -1,5 +1,5 @@
 coverage.json
-input_code_test.py
+test_input_code.py
 input_code.py
 createFileTest.py
 run_process.py
@@ -30,6 +30,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+mutants/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
