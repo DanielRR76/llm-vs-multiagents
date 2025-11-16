@@ -1,4 +1,4 @@
-# query_manager.py
+import subprocess
 import time
 from src.application.orchestrator import Orchestrator
 from src.domain.state import State
@@ -13,22 +13,14 @@ class QueryManager:
 
     def multi_agent_response(self, code: str) -> OutputDTO:
         state = State(code=code)
-        FileManager.writeFile("src/environment/python/input_code.py", code)
+        FileManager.writeFile("src/environment/python/app/input_code.py", code)
         try:
             inicio = time.time()
             result = self.agent_manager.chain.invoke(state)
             fim = time.time()
-            metrics = {
-                "coverage": result.get("test_reviewer_response", {}).get("coverage", 0),
-                "killed_mutation": result.get("test_reviewer_response", {}).get(
-                    "killed_mutation", 0
-                ),
-                "survived_mutation": result.get("test_reviewer_response", {}).get(
-                    "survived_mutation", 0
-                ),
-                "performance": fim - inicio,
-            }
-            print(f"Metrics: {metrics}")
+            subprocess.run(["make", "python-mut"])
+            subprocess.run(["make", "python-cov"])
+            print(f"Tempo de execução: {fim - inicio} segundos")
             return OutputDTO(
                 success=True,
                 code=result.get("test_generator_response", ""),
