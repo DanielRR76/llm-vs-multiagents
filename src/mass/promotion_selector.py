@@ -1,4 +1,3 @@
-# ecommerce_services.py
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Sequence, Mapping, Dict, Any
 
@@ -18,7 +17,9 @@ class PromotionSelectorService:
     def __init__(self):
         pass
 
-    def select_best(self, promotions: Sequence[Mapping[str, Any]], subtotal: Decimal) -> Dict[str, Any]:
+    def select_best(
+        self, promotions: Sequence[Mapping[str, Any]], subtotal: Decimal
+    ) -> Dict[str, Any]:
         best = None
         best_discount = Decimal("0.00")
         for promo in promotions:
@@ -31,11 +32,12 @@ class PromotionSelectorService:
             ptype = promo["type"]
             value = Decimal(str(promo["value"]))
             if ptype == "percentage":
-                discount = (subtotal * value).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+                discount = (subtotal * value).quantize(
+                    Decimal("0.01"), rounding=ROUND_HALF_UP
+                )
             else:
                 discount = value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
             if discount > best_discount:
                 best_discount = discount
                 best = promo
         return {"promotion": best, "discount": best_discount}
-
