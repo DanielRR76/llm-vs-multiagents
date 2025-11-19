@@ -1,9 +1,12 @@
 import re
 
+
 def validar_senha(senha: str) -> tuple[bool, str | None]:
     """
     retorna (validou, msgErro)
     """
+    if not isinstance(senha, str):
+        return False, "Senha deve ser uma string."
 
     if len(senha) < 8:
         return False, "Senha deve ter pelo menos 8 caracteres."
@@ -31,15 +34,9 @@ def validar_senha(senha: str) -> tuple[bool, str | None]:
 
     lower = senha.lower()
     if "senha" in lower or "password" in lower:
-        return False, "Senha não deve conter palavras óbvias como 'senha' ou 'password'."
-
-    tipos = 0
-    if re.search(r"\d", senha): tipos += 1
-    if re.search(r"[A-Z]", senha): tipos += 1
-    if re.search(r"[a-z]", senha): tipos += 1
-    if re.search(r"[!@#$%^&*()_+\-={}\[\]|:;\"'<>,.?/]", senha): tipos += 1
-
-    if tipos < 3:
-        return False, "Senha deve conter pelo menos três tipos diferentes de caracteres (número, maiúscula, minúscula, especial)."
+        return (
+            False,
+            "Senha não deve conter palavras óbvias como 'senha' ou 'password'.",
+        )
 
     return True, None
